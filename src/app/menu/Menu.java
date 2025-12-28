@@ -8,10 +8,14 @@ import app.service.AccountService;
 import java.math.BigDecimal;
 
 public class Menu {
-    private static boolean running = true;
-    private static final AccountService services = new AccountService();
+    private boolean running = true;
+    private final AccountService services;
 
-    public static void start() {
+    public Menu(AccountService services) {
+        this.services = services;
+    }
+
+    public void start() {
         while (running) {
             printMenu();
             int choice = Input.readInt("Choose service: ");
@@ -28,7 +32,7 @@ public class Menu {
         }
     }
 
-    private static void printMenu() {
+    private void printMenu() {
         System.out.println("""
                 === SERVICES ===
                 1. Create new account
@@ -40,11 +44,11 @@ public class Menu {
                 """);
     }
 
-    private static String askAccountId() {
+    private String askAccountId() {
         return Input.readLine("Account ID: ");
     }
 
-    private static void createAccount() {
+    private void createAccount() {
         String ownerName = Input.readLine("Name: ");
         try {
             String accountId = services.createAccount(ownerName);
@@ -55,7 +59,7 @@ public class Menu {
         }
     }
 
-    private static void deposit() {
+    private void deposit() {
         String accountId = askAccountId();
         try {
             AccountView view = services.viewAccount(accountId);
@@ -68,7 +72,7 @@ public class Menu {
         }
     }
 
-    private static void withdraw() {
+    private void withdraw() {
         String accountId = askAccountId();
         try {
             AccountView view = services.viewAccount(accountId);
@@ -81,7 +85,7 @@ public class Menu {
         }
     }
 
-    private static void viewAccountDetails() {
+    private void viewAccountDetails() {
         String accountId = askAccountId();
         try {
             AccountView view = services.viewAccount(accountId);
@@ -104,7 +108,7 @@ public class Menu {
         );
     }
 
-    private static void listAllAccounts() {
+    private void listAllAccounts() {
         for (AccountView view : services.listAccounts()) {
             System.out.println(
                     view.accountId() + " | " + view.ownerName() + " | $" + view.balance()
@@ -113,7 +117,7 @@ public class Menu {
         System.out.println();
     }
 
-    private static void exit() {
+    private void exit() {
         running = false;
         System.out.println("Goodbye!");
     }

@@ -3,16 +3,16 @@ package app.menu;
 import app.dto.AccountView;
 import app.exception.AccountException;
 import app.io.Input;
-import app.service.AccountService;
+import app.service.AccountApplicationService;
 
 import java.math.BigDecimal;
 
 public class Menu {
     private boolean running = true;
-    private final AccountService services;
+    private final AccountApplicationService appServices;
 
-    public Menu(AccountService services) {
-        this.services = services;
+    public Menu(AccountApplicationService appService) {
+        this.appServices = appService;
     }
 
     public void start() {
@@ -51,7 +51,7 @@ public class Menu {
     private void createAccount() {
         String ownerName = Input.readLine("Name: ");
         try {
-            String accountId = services.createAccount(ownerName);
+            String accountId = appServices.createAccount(ownerName);
             System.out.println("Successfully created a new account!");
             System.out.println("Account id: " + accountId + "\n");
         } catch (AccountException e) {
@@ -62,10 +62,9 @@ public class Menu {
     private void deposit() {
         String accountId = askAccountId();
         try {
-            AccountView view = services.viewAccount(accountId);
-            printAccountDetails(view);
             BigDecimal amount = Input.readBigDecimal("Amount to deposit: $");
-            services.deposit(accountId, amount);
+            AccountView updated = appServices.deposit(accountId, amount);
+            printAccountDetails(updated);
             System.out.println("Success!\n");
         } catch (AccountException e) {
             System.err.println(e.getMessage());
@@ -75,10 +74,9 @@ public class Menu {
     private void withdraw() {
         String accountId = askAccountId();
         try {
-            AccountView view = services.viewAccount(accountId);
-            printAccountDetails(view);
             BigDecimal amount = Input.readBigDecimal("Amount to withdraw: $");
-            services.withdraw(accountId, amount);
+            AccountView updated = appServices.withdraw(accountId, amount);
+            printAccountDetails(updated);
             System.out.println("Success!\n");
         } catch (AccountException e) {
             System.err.println(e.getMessage());
@@ -88,8 +86,7 @@ public class Menu {
     private void viewAccountDetails() {
         String accountId = askAccountId();
         try {
-            AccountView view = services.viewAccount(accountId);
-            printAccountDetails(view);
+            printAccountDetails(appServices.viewAccount(accountId));
         } catch (AccountException e) {
             System.err.println(e.getMessage());
         }
@@ -109,7 +106,7 @@ public class Menu {
     }
 
     private void listAllAccounts() {
-        for (AccountView view : services.listAccounts()) {
+        for (AccountView view : appServices.listAccounts()) {
             System.out.println(
                     view.accountId() + " | " + view.ownerName() + " | $" + view.balance()
             );

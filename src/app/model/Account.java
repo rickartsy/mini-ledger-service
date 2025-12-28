@@ -21,20 +21,22 @@ public class Account {
     }
 
     public void deposit(BigDecimal amount) {
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidAmountException(amount);
-        }
+        validateAmount(amount);
         balance = balance.add(amount);
     }
 
     public void withdraw(BigDecimal amount) {
-        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new InvalidAmountException(amount);
-        }
+        validateAmount(amount);
         if (balance.compareTo(amount) < 0) {
             throw new InsufficientBalanceException(balance, amount);
         }
         balance = balance.subtract(amount);
+    }
+
+    private void validateAmount(BigDecimal amount) {
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new InvalidAmountException(amount);
+        }
     }
 
     public String getAccountId() {

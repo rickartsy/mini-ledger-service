@@ -13,4 +13,16 @@ public class Transaction {
         this.amount = amount;
         this.timestamp = LocalDateTime.now();
     }
+
+    public TransactionType getType() {
+        return type;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 }

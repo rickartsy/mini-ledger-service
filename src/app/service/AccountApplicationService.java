@@ -1,6 +1,7 @@
 package app.service;
 
 import app.dto.AccountView;
+import app.dto.TransactionView;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -29,6 +30,10 @@ public class AccountApplicationService {
 
     public AccountView viewAccount(String accountId) {
         return accountService.viewAccount(accountId);
+    }
+
+    public List<TransactionView> viewTransactions(String accountId) {
+        return accountService.viewTransactions(accountId);
     }
 
     public List<AccountView> listAccounts() {

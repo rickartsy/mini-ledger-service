@@ -1,8 +1,10 @@
 package app.service;
 
 import app.dto.AccountView;
+import app.dto.TransactionView;
 import app.exception.AccountNotFoundException;
 import app.model.Account;
+import app.model.Transaction;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -46,6 +48,17 @@ public class AccountService {
                 account.getOwnerName(),
                 account.getBalance()
         );
+    }
+
+    public List<TransactionView> viewTransactions(String accountId) {
+        Account account = getAccountById(accountId);
+        return account.getTransactions().stream()
+                .map(transaction -> new TransactionView(
+                        transaction.getType(),
+                        transaction.getAmount(),
+                        transaction.getTimestamp()
+                ))
+                .toList();
     }
 
     public List<AccountView> listAccounts() {

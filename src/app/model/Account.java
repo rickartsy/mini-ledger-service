@@ -5,11 +5,14 @@ import app.exception.InvalidAmountException;
 import app.exception.InvalidNameException;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Account {
     private final String accountId;
     private final String ownerName;
     private BigDecimal balance;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public Account(String id, String name) {
         if (name == null || name.isBlank()) {
@@ -23,6 +26,7 @@ public class Account {
     public void deposit(BigDecimal amount) {
         validateAmount(amount);
         balance = balance.add(amount);
+        transactions.add(new Transaction(TransactionType.DEPOSIT, amount));
     }
 
     public void withdraw(BigDecimal amount) {
@@ -31,6 +35,7 @@ public class Account {
             throw new InsufficientBalanceException(balance, amount);
         }
         balance = balance.subtract(amount);
+        transactions.add(new Transaction(TransactionType.WITHDRAW, amount));
     }
 
     private void validateAmount(BigDecimal amount) {
@@ -49,6 +54,10 @@ public class Account {
 
     public BigDecimal getBalance() {
         return balance;
+    }
+
+    public List<Transaction> getTransactions() {
+        return List.copyOf(transactions);
     }
 
 }

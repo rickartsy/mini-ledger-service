@@ -4,7 +4,6 @@ import app.dto.AccountView;
 import app.dto.TransactionView;
 import app.exception.AccountNotFoundException;
 import app.model.Account;
-import app.model.Transaction;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

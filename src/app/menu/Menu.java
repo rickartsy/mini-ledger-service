@@ -1,11 +1,13 @@
 package app.menu;
 
 import app.dto.AccountView;
+import app.dto.TransactionView;
 import app.exception.AccountException;
 import app.io.Input;
 import app.service.AccountApplicationService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class Menu {
     private boolean running = true;
@@ -25,8 +27,9 @@ public class Menu {
                 case 2 -> deposit();
                 case 3 -> withdraw();
                 case 4 -> viewAccountDetails();
-                case 5 -> listAllAccounts();
-                case 6 -> exit();
+                case 5 -> viewTransactions();
+                case 6 -> listAllAccounts();
+                case 7 -> exit();
                 default -> System.out.println("Invalid option.\n");
             }
         }
@@ -39,8 +42,9 @@ public class Menu {
                 2. Deposit money
                 3. Withdraw money
                 4. View account details
-                5. List all account
-                6. Exit
+                5. View transactions history
+                6. List all account
+                7. Exit
                 """);
     }
 
@@ -92,9 +96,32 @@ public class Menu {
         }
     }
 
+    private void viewTransactions() {
+        String accountId = askAccountId();
+        try {
+            List<TransactionView> transactions = appServices.viewTransactions(accountId);
+            if (transactions.isEmpty()) {
+                System.out.println("No transaction found.\n");
+                return;
+            }
+            System.out.println("--Transaction history--");
+            for (TransactionView transaction : transactions) {
+                System.out.printf(
+                        "%s | %s | $%s %n",
+                        transaction.timestamp(),
+                        transaction.type(),
+                        transaction.amount()
+                );
+            }
+            System.out.println();
+        } catch (AccountException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
     private static void printAccountDetails(AccountView view) {
         System.out.printf("""
-                        Account details
+                        --Account details--
                             ID: %s
                             Owner: %s
                             Balance: $%s

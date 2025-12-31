@@ -12,7 +12,7 @@ public class Account {
     private final String accountId;
     private final String ownerName;
     private BigDecimal balance;
-    private List<Transaction> transactions = new ArrayList<>();
+    private final List<Transaction> transactions = new ArrayList<>();
 
     public Account(String id, String name) {
         if (name == null || name.isBlank()) {
@@ -26,7 +26,13 @@ public class Account {
     public void deposit(BigDecimal amount) {
         validateAmount(amount);
         balance = balance.add(amount);
-        transactions.add(new Transaction(TransactionType.DEPOSIT, amount));
+        transactions.add(
+                new Transaction(
+                        TransactionType.DEPOSIT,
+                        amount,
+                        balance
+                )
+        );
     }
 
     public void withdraw(BigDecimal amount) {
@@ -35,7 +41,13 @@ public class Account {
             throw new InsufficientBalanceException(balance, amount);
         }
         balance = balance.subtract(amount);
-        transactions.add(new Transaction(TransactionType.WITHDRAW, amount));
+        transactions.add(
+                new Transaction(
+                        TransactionType.WITHDRAW,
+                        amount,
+                        balance
+                )
+        );
     }
 
     private void validateAmount(BigDecimal amount) {

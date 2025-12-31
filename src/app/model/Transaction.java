@@ -6,11 +6,13 @@ import java.time.LocalDateTime;
 public class Transaction {
     private final TransactionType type;
     private final BigDecimal amount;
+    private final BigDecimal balanceAfter;
     private final LocalDateTime timestamp;
 
-    public Transaction(TransactionType type, BigDecimal amount) {
+    public Transaction(TransactionType type, BigDecimal amount, BigDecimal balanceAfter) {
         this.type = type;
         this.amount = amount;
+        this.balanceAfter = balanceAfter;
         this.timestamp = LocalDateTime.now();
     }
 
@@ -20,6 +22,10 @@ public class Transaction {
 
     public BigDecimal getAmount() {
         return amount;
+    }
+
+    public BigDecimal getBalanceAfter() {
+        return balanceAfter;
     }
 
     public LocalDateTime getTimestamp() {

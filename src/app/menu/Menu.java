@@ -107,10 +107,11 @@ public class Menu {
             System.out.println("--Transaction history--");
             for (TransactionView transaction : transactions) {
                 System.out.printf(
-                        "%s | %s | $%s %n",
+                        "%s | %s | $%s | Balance: %s %n",
                         transaction.timestamp(),
                         transaction.type(),
-                        transaction.amount()
+                        transaction.amount(),
+                        transaction.balanceAfter()
                 );
             }
             System.out.println();

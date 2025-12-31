@@ -55,6 +55,7 @@ public class AccountService {
                 .map(transaction -> new TransactionView(
                         transaction.getType(),
                         transaction.getAmount(),
+                        transaction.getBalanceAfter(),
                         transaction.getTimestamp()
                 ))
                 .toList();
